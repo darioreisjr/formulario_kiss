@@ -1,11 +1,42 @@
 import { Box, Button, Flex, FormControl, FormLabel, Heading, Input, Text, Textarea } from '@chakra-ui/react'
 import Head from 'next/head'
+import { FormEvent, FunctionComponent, useState } from 'react'
 
-export default function Home() {
+interface IHomeProps {
+  nome: string
+  sobrenome: string
+  email: string
+  endereco: string
+  telefone: string
+  mensagem: string
+}
+
+const Home: FunctionComponent<IHomeProps> = () => {
+  const [nome, setNome] = useState('');
+  const [sobrenome, setSobrenome] = useState('');
+  const [email, setEmail] = useState('');
+  const [endereco, setEndereco] = useState('');
+  const [telefone, setTelefone] = useState('');
+  const [mensagem, setMensagem] = useState('');
+
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+
+    const data = {
+      nome,
+      sobrenome,
+      email,
+      endereco,
+      telefone,
+      mensagem
+    }
+    console.log(data)
+  }
+
   return (
     <>
       <Head>
-        <title>Formulário Kiss</title>
+        <title>Formulário Kiss - state</title>
         <meta name="description" content="Formulario criado com nextJs, chakra UI, React Hook Forms e Typescript" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
@@ -32,32 +63,34 @@ export default function Home() {
               <Text color='gray.200' fontSize='2xl'>Formulário de registro</Text>
             </Heading>
             <Box>
-              <form action='' autoComplete='off' >
+              <form action='' autoComplete='off' onSubmit={handleSubmit} >
                 <Flex justify='space-between'>
                   <FormControl isRequired marginTop='15px' width='49%' >
                     <FormLabel color='gray.200'>Nome</FormLabel>
                     <Input
                       type='text'
-                      name='name'
+                      name='nome'
                       border='none'
                       outline='none'
                       bgColor='gray.900'
                       focusBorderColor='gray.600'
                       color='gray.200'
                       placeholder='Ex:. Ana'
+                      onChange={(e) => setNome(e.target.value)}
                     />
                   </FormControl>
                   <FormControl isRequired marginTop='15px' width='49%'>
                     <FormLabel color='gray.200'>Sobrenome</FormLabel>
                     <Input
                       type='text'
-                      name='name'
+                      name='sobrenome'
                       border='none'
                       outline='none'
                       bgColor='gray.900'
                       focusBorderColor='gray.600'
                       color='gray.200'
                       placeholder='Ex:. Assis de Oliveira'
+                      onChange={(e) => setSobrenome(e.target.value)}
                     />
                   </FormControl>
                 </Flex>
@@ -65,13 +98,14 @@ export default function Home() {
                   <FormLabel color='gray.200'>Seu e-mail</FormLabel>
                   <Input
                     type='email'
-                    name='name'
+                    name='email'
                     border='none'
                     outline='none'
                     bgColor='gray.900'
                     focusBorderColor='gray.600'
                     color='gray.200'
                     placeholder='Ex:. seuemail@email.com'
+                    onChange={(e) => setEmail(e.target.value)}
                   />
                 </FormControl>
                 <Flex justify='space-between'>
@@ -79,33 +113,35 @@ export default function Home() {
                     <FormLabel color='gray.200'>Seu Endereço</FormLabel>
                     <Input
                       type='text'
-                      name='name'
+                      name='endereco'
                       border='none'
                       outline='none'
                       bgColor='gray.900'
                       focusBorderColor='gray.600'
                       color='gray.200'
                       placeholder='Ex:. Rua Gralber Santos, 1250 - Santos/SP'
+                      onChange={(e) => setEndereco(e.target.value)}
                     />
                   </FormControl>
                   <FormControl isRequired marginTop='15px' width='49%'>
                     <FormLabel color='gray.200'>Seu Telefone</FormLabel>
                     <Input
                       type='tel'
-                      name='name'
+                      name='telefone'
                       border='none'
                       outline='none'
                       bgColor='gray.900'
                       focusBorderColor='gray.600'
                       color='gray.200'
                       placeholder='Ex:. (13) 90900-0000'
+                      onChange={(e) => setTelefone(e.target.value)}
                     />
                   </FormControl>
                 </Flex>
                 <FormControl isRequired marginTop='15px' >
                   <FormLabel color='gray.200'>Sua Mensagem</FormLabel>
                   <Textarea
-                    name='name'
+                    name='mensagem'
                     border='none'
                     outline='none'
                     bgColor='gray.900'
@@ -113,6 +149,7 @@ export default function Home() {
                     color='gray.200'
                     resize='none'
                     placeholder='Mande aqui sua mensagem.......'
+                    onChange={(e) => setMensagem(e.target.value)}
                   />
                 </FormControl>
                 <Button
@@ -135,3 +172,5 @@ export default function Home() {
     </>
   )
 }
+
+export default Home;
