@@ -2,22 +2,43 @@ import { Box, Button, Flex, FormControl, FormLabel, Heading, Input, Text, Textar
 import Head from 'next/head'
 import { FunctionComponent } from 'react'
 import { useForm } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from "yup";
 
-interface IHomeProps {
-    nome: string
-    sobrenome: string
-    email: string
-    endereco: string
-    telefone: string
-    mensagem: string
-    onSubmit: () => void
-    handleSubmit: () => void
+interface IUserFormData {
+    nome: string,
+    sobrenome: string,
+    email: string,
+    endereco: string,
+    telefone: string,
+    mensagem: string,
+    onSubmit: () => void,
+    handleSubmit: () => void,
 }
 
-const Cadastro: FunctionComponent<IHomeProps> = () => {
-    const { register, handleSubmit} = useForm();
-    const onSubmit = (data: Object) => {
+const schema = yup.object({
+    nome: yup.string().required(),
+    sobrenome: yup.string().required(),
+    email: yup.string().required(),
+    endereco: yup.string().required(),
+    telefone: yup.string().required(),
+    mensagem: yup.string().required(),
+}).required();
+
+
+const Cadastro: FunctionComponent = () => {
+    const { register,
+        handleSubmit,
+        formState: { errors }
+    } = useForm<IUserFormData>({
+        resolver: yupResolver(schema)
+    })
+    function onSubmit(data: IUserFormData) {
         console.log(data)
+    }
+
+    function setErros(error: any) {
+        console.log('Errors', error)
     }
 
     return (
@@ -50,7 +71,7 @@ const Cadastro: FunctionComponent<IHomeProps> = () => {
                             <Text color='gray.200' fontSize='2xl'>Formulário de registro</Text>
                         </Heading>
                         <Box>
-                            <form action='' autoComplete='off' onSubmit={handleSubmit(onSubmit)}>
+                            <form action='' autoComplete='off' onSubmit={handleSubmit(onSubmit, setErros)}>
                                 <Flex justify='space-between'>
                                     <FormControl isRequired marginTop='15px' width='49%' >
                                         <FormLabel color='gray.200'>Nome</FormLabel>
@@ -64,6 +85,10 @@ const Cadastro: FunctionComponent<IHomeProps> = () => {
                                             placeholder='Ex:. Ana'
                                             {...register('nome')}
                                         />
+                                        <p style={{
+                                            color: 'red'
+                                        }} >
+                                            {errors?.nome?.message }</p>
                                     </FormControl>
                                     <FormControl isRequired marginTop='15px' width='49%'>
                                         <FormLabel color='gray.200'>Sobrenome</FormLabel>
@@ -77,6 +102,10 @@ const Cadastro: FunctionComponent<IHomeProps> = () => {
                                             placeholder='Ex:. Assis de Oliveira'
                                             {...register('sobrenome')}
                                         />
+                                         <p style={{
+                                            color: 'red'
+                                        }} >
+                                            {errors?.sobrenome?.message }</p>
                                     </FormControl>
                                 </Flex>
                                 <FormControl isRequired marginTop='15px'>
@@ -91,6 +120,10 @@ const Cadastro: FunctionComponent<IHomeProps> = () => {
                                         placeholder='Ex:. seuemail@email.com'
                                         {...register('email')}
                                     />
+                                     <p style={{
+                                            color: 'red'
+                                        }} >
+                                            {errors?.email?.message }</p>
                                 </FormControl>
                                 <Flex justify='space-between'>
                                     <FormControl isRequired marginTop='15px' width='49%'>
@@ -104,8 +137,11 @@ const Cadastro: FunctionComponent<IHomeProps> = () => {
                                             color='gray.200'
                                             placeholder='Ex:. Rua Gralber Santos, 1250 - Santos/SP'
                                             {...register('endereco')}
-
                                         />
+                                         <p style={{
+                                            color: 'red'
+                                        }} >
+                                            {errors?.endereco?.message }</p>
                                     </FormControl>
                                     <FormControl isRequired marginTop='15px' width='49%'>
                                         <FormLabel color='gray.200'>Seu Telefone</FormLabel>
@@ -118,8 +154,11 @@ const Cadastro: FunctionComponent<IHomeProps> = () => {
                                             color='gray.200'
                                             placeholder='Ex:. (13) 90900-0000'
                                             {...register('telefone')}
-
                                         />
+                                         <p style={{
+                                            color: 'red'
+                                        }} >
+                                            {errors?.telefone?.message }</p>
                                     </FormControl>
                                 </Flex>
                                 <FormControl isRequired marginTop='15px' >
@@ -134,6 +173,10 @@ const Cadastro: FunctionComponent<IHomeProps> = () => {
                                         placeholder='Mande aqui sua mensagem.......'
                                         {...register('mensagem')}
                                     />
+                                     <p style={{
+                                            color: 'red'
+                                        }} >
+                                            {errors?.mensagem?.message }</p>
                                 </FormControl>
                                 <Button
                                     type='submit'

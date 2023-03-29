@@ -30,6 +30,8 @@ const Home: FunctionComponent<IHomeProps> = () => {
       telefone,
       mensagem
     }
+
+    
     console.log(data)
   }
 
